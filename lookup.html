@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>飪點 eatLink｜查看訂單</title>
+<meta name="description" content="查詢您的取餐編號">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+  /* 連結與大樓名稱：在檔案下方的「設定區」(GROUPS) 修改 */
+  :root{
+    --bg:#EEF4F8;
+    --ink:#17344A;
+    --blue:#1E679B;
+    --orange:#E8893A;
+    --card1:#D6E6F2;
+    --card2:#1E679B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink)}
+  body{
+    font-family:"Noto Serif TC","PingFang TC","Microsoft JhengHei",serif;
+    min-height:100vh;min-height:100dvh;
+    display:flex;flex-direction:column;align-items:center;
+    padding:24px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+  header{text-align:center;margin-bottom:22px;width:100%;max-width:480px}
+  .brand{font-size:18px;font-weight:900;letter-spacing:.04em;color:#5B6E7C}
+  .brand .eat{color:var(--orange);font-family:system-ui,sans-serif;font-weight:800}
+  .brand .link{color:#B8946A;font-family:system-ui,sans-serif;font-weight:800}
+
+  .banner{
+    margin-top:14px;background:var(--blue);color:#fff;border-radius:16px;
+    padding:18px 16px;display:flex;align-items:center;justify-content:center;gap:12px;
+  }
+  .banner svg{flex:none}
+  .banner h1{font-size:28px;font-weight:900;letter-spacing:.12em}
+  .hint{margin-top:14px;font-size:17px;color:var(--blue);font-weight:600}
+
+  main{width:100%;max-width:480px;display:flex;flex-direction:column;gap:14px}
+  a.card{
+    position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    text-decoration:none;color:var(--ink);
+    border-radius:16px;padding:22px 20px;min-height:130px;
+    box-shadow:0 4px 14px rgba(23,52,74,.12);
+    transition:transform .12s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  a.card:active{transform:scale(.97)}
+  a.card.g1{background:var(--card1)}
+  a.card.g2{background:var(--card2);color:#fff}
+  .places{font-size:24px;font-weight:900;line-height:1.4;letter-spacing:.05em}
+  .cta{
+    flex:none;font-family:system-ui,sans-serif;font-size:15px;font-weight:800;
+    border-radius:999px;padding:10px 14px;white-space:nowrap;
+    background:#fff;color:var(--blue);
+  }
+  .g1 .cta{background:var(--blue);color:#fff}
+  .last{
+    position:absolute;top:-9px;left:16px;
+    font-family:system-ui,sans-serif;font-size:12px;font-weight:700;
+    background:var(--orange);color:#fff;border-radius:999px;padding:3px 10px;
+    display:none;
+  }
+  a.card.is-last .last{display:block}
+  a.card.is-last{outline:3px solid var(--orange);outline-offset:-3px}
+
+  footer{margin-top:auto;padding-top:24px;font-size:13px;color:#6E8494;text-align:center;font-family:system-ui,sans-serif}
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">飪點 <span class="eat">eat</span><span class="link">Link</span></div>
+    <div class="banner">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+        <path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/>
+      </svg>
+      <h1>查看訂單</h1>
+    </div>
+    <p class="hint">查詢取餐編號，請選擇您的大樓 👇</p>
+  </header>
+
+  <main id="cards"></main>
+
+  <footer>還沒點餐？請點圖文選單「線上點餐」</footer>
+
+<script>
+  // ===== 設定區：日後換組、加大樓，只改這裡 =====
+  const GROUPS = [
+    { id: "甲", places: ["華航園區", "藝文特區"],          url: "https://reurl.cc/OQKLqv" },
+    { id: "乙", places: ["T1/T2", "臺北關", "修護園區"],   url: "https://reurl.cc/4YVvy3" }
+  ];
+  // ============================================
+
+  const KEY = "eatlink_last_group";   // 和點餐頁共用：在點餐頁選過，這裡也會標示
+  let last = null;
+  try { last = localStorage.getItem(KEY); } catch (e) {}
+
+  const box = document.getElementById("cards");
+  GROUPS.forEach((g, i) => {
+    const a = document.createElement("a");
+    a.className = "card g" + (i % 2 + 1) + (g.id === last ? " is-last" : "");
+    a.href = g.url;
+    a.innerHTML =
+      '<span class="last">上次選這裡</span>' +
+      '<div class="places">' + g.places.join("・") + '</div>' +
+      '<div class="cta">查詢 ›</div>';
+    a.addEventListener("click", () => {
+      try { localStorage.setItem(KEY, g.id); } catch (e) {}
+    });
+    box.appendChild(a);
+  });
+</script>
+</body>
+</html>
