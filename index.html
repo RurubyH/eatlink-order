@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>飪點 eatLink｜線上點餐</title>
+<meta name="description" content="請選擇您所在的大樓，進入點餐">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+  /* ===== 只要改這裡：兩組的點餐連結與大樓名稱 ===== */
+  /* 連結在下方 <script> 的 GROUPS 裡設定 */
+
+  :root{
+    --bg:#F7EFE3;
+    --ink:#4A3426;
+    --brown:#8A5A3B;
+    --orange:#E8893A;
+    --card1:#F2E1C8;
+    --card2:#BD9B78;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink)}
+  body{
+    font-family:"Noto Serif TC","PingFang TC","Microsoft JhengHei",serif;
+    min-height:100vh;min-height:100dvh;
+    display:flex;flex-direction:column;align-items:center;
+    padding:28px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+  header{text-align:center;margin-bottom:22px}
+  .brand{font-size:26px;font-weight:900;letter-spacing:.04em}
+  .brand .eat{color:var(--orange);font-family:system-ui,sans-serif;font-weight:800}
+  .brand .link{color:#B8946A;font-family:system-ui,sans-serif;font-weight:800}
+  .hint{margin-top:10px;font-size:17px;color:var(--brown);font-weight:600}
+
+  main{width:100%;max-width:480px;display:flex;flex-direction:column;gap:16px}
+  a.card{
+    position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-decoration:none;color:var(--ink);
+    border-radius:18px;padding:30px 16px 26px;min-height:200px;
+    box-shadow:0 4px 14px rgba(74,52,38,.12);
+    transition:transform .12s ease, box-shadow .12s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  a.card:active{transform:scale(.97);box-shadow:0 2px 8px rgba(74,52,38,.15)}
+  a.card.g1{background:var(--card1)}
+  a.card.g2{background:var(--card2)}
+  .places{font-size:30px;font-weight:900;line-height:1.35;text-align:center;letter-spacing:.06em}
+  .cta{
+    margin-top:18px;font-size:20px;font-weight:900;color:var(--brown);
+    letter-spacing:.12em;
+  }
+  .g2 .cta{color:#5E3B22}
+  .last{
+    position:absolute;top:12px;right:12px;
+    font-family:system-ui,sans-serif;font-size:12px;font-weight:700;
+    background:var(--orange);color:#fff;border-radius:999px;padding:4px 10px;
+    display:none;
+  }
+  a.card.is-last .last{display:block}
+  a.card.is-last{outline:3px solid var(--orange);outline-offset:-3px}
+
+  footer{margin-top:auto;padding-top:24px;font-size:13px;color:#9C8571;text-align:center;font-family:system-ui,sans-serif}
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">飪點 <span class="eat">eat</span><span class="link">Link</span></div>
+    <p class="hint">請選擇您所在的大樓 👇</p>
+  </header>
+
+  <main id="cards"></main>
+
+  <footer>不確定所在區域？請點圖文選單「即時客服」詢問</footer>
+
+<script>
+  // ===== 設定區：日後換組、加大樓，只改這裡 =====
+  const GROUPS = [
+    {
+      id: "甲",
+      places: ["華航園區", "藝文特區"],
+      url: "https://請貼上甲組點餐連結"
+    },
+    {
+      id: "乙",
+      places: ["T1/T2", "臺北關", "修護園區"],
+      url: "https://請貼上乙組點餐連結"
+    }
+  ];
+  // ============================================
+
+  const KEY = "eatlink_last_group";
+  let last = null;
+  try { last = localStorage.getItem(KEY); } catch (e) {}
+
+  const box = document.getElementById("cards");
+  GROUPS.forEach((g, i) => {
+    const a = document.createElement("a");
+    a.className = "card g" + (i % 2 + 1) + (g.id === last ? " is-last" : "");
+    a.href = g.url;
+    a.innerHTML =
+      '<span class="last">上次選這裡</span>' +
+      '<div class="places">' + g.places.join("<br>") + '</div>' +
+      '<div class="cta">點餐請點此 ›</div>';
+    a.addEventListener("click", () => {
+      try { localStorage.setItem(KEY, g.id); } catch (e) {}
+    });
+    box.appendChild(a);
+  });
+</script>
+</body>
+</invoke>
