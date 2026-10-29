@@ -7,53 +7,60 @@
 <meta name="description" content="請選擇您所在的大樓，進入點餐">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
 <style>
-  /* ===== 只要改這裡：兩組的點餐連結與大樓名稱 ===== */
-  /* 連結在下方 <script> 的 GROUPS 裡設定 */
-
+  /* 連結與大樓名稱：在檔案下方的「設定區」(GROUPS) 修改 */
   :root{
     --bg:#F7EFE3;
     --ink:#4A3426;
     --brown:#8A5A3B;
     --orange:#E8893A;
     --card1:#F2E1C8;
-    --card2:#BD9B78;
+    --card2:#9C6B47;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--ink)}
   body{
-    font-family:"Noto Serif TC","PingFang TC","Microsoft JhengHei",serif;
+    font-family:"Noto Serif TC","Noto Serif CJK TC","PingFang TC","Microsoft JhengHei",serif;
     min-height:100vh;min-height:100dvh;
     display:flex;flex-direction:column;align-items:center;
-    padding:28px 16px calc(24px + env(safe-area-inset-bottom));
+    padding:24px 16px calc(24px + env(safe-area-inset-bottom));
   }
-  header{text-align:center;margin-bottom:22px}
-  .brand{font-size:26px;font-weight:900;letter-spacing:.04em}
+  header{text-align:center;margin-bottom:22px;width:100%;max-width:480px}
+  .brand{font-size:18px;font-weight:900;letter-spacing:.04em;color:#8C7562}
   .brand .eat{color:var(--orange);font-family:system-ui,sans-serif;font-weight:800}
   .brand .link{color:#B8946A;font-family:system-ui,sans-serif;font-weight:800}
-  .hint{margin-top:10px;font-size:17px;color:var(--brown);font-weight:600}
 
-  main{width:100%;max-width:480px;display:flex;flex-direction:column;gap:16px}
+  .banner{
+    margin-top:14px;background:var(--brown);color:#fff;border-radius:16px;
+    padding:18px 16px;display:flex;align-items:center;justify-content:center;gap:12px;
+  }
+  .banner svg{flex:none}
+  .banner h1{font-size:28px;font-weight:900;letter-spacing:.12em}
+  .hint{margin-top:14px;font-size:17px;color:var(--brown);font-weight:600}
+
+  main{width:100%;max-width:480px;display:flex;flex-direction:column;gap:14px}
   a.card{
-    position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;
     text-decoration:none;color:var(--ink);
-    border-radius:18px;padding:30px 16px 26px;min-height:200px;
+    border-radius:16px;padding:22px 20px;min-height:130px;
     box-shadow:0 4px 14px rgba(74,52,38,.12);
-    transition:transform .12s ease, box-shadow .12s ease;
+    transition:transform .12s ease;
     -webkit-tap-highlight-color:transparent;
   }
-  a.card:active{transform:scale(.97);box-shadow:0 2px 8px rgba(74,52,38,.15)}
+  a.card:active{transform:scale(.97)}
   a.card.g1{background:var(--card1)}
-  a.card.g2{background:var(--card2)}
-  .places{font-size:30px;font-weight:900;line-height:1.35;text-align:center;letter-spacing:.06em}
+  a.card.g2{background:var(--card2);color:#fff}
+  .pl{white-space:nowrap}
+  .places{font-size:24px;font-weight:900;line-height:1.4;letter-spacing:.05em}
   .cta{
-    margin-top:18px;font-size:20px;font-weight:900;color:var(--brown);
-    letter-spacing:.12em;
+    flex:none;font-family:system-ui,sans-serif;font-size:15px;font-weight:800;
+    border-radius:999px;padding:10px 14px;white-space:nowrap;
+    background:#fff;color:var(--brown);
   }
-  .g2 .cta{color:#5E3B22}
+  .g1 .cta{background:var(--orange);color:#fff}
   .last{
-    position:absolute;top:12px;right:12px;
+    position:absolute;top:-9px;left:16px;
     font-family:system-ui,sans-serif;font-size:12px;font-weight:700;
-    background:var(--orange);color:#fff;border-radius:999px;padding:4px 10px;
+    background:var(--orange);color:#fff;border-radius:999px;padding:3px 10px;
     display:none;
   }
   a.card.is-last .last{display:block}
@@ -65,6 +72,13 @@
 <body>
   <header>
     <div class="brand">飪點 <span class="eat">eat</span><span class="link">Link</span></div>
+    <div class="banner">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 2v7a3 3 0 0 0 3 3v10"/><path d="M9 2v7"/><path d="M6 2v7"/>
+        <path d="M18 22V2c-2.2 0-4 2.7-4 6v5h4"/>
+      </svg>
+      <h1>線上點餐</h1>
+    </div>
     <p class="hint">請選擇您所在的大樓 👇</p>
   </header>
 
@@ -75,20 +89,12 @@
 <script>
   // ===== 設定區：日後換組、加大樓，只改這裡 =====
   const GROUPS = [
-    {
-      id: "甲",
-      places: ["華航園區", "藝文特區"],
-      url: "https://reurl.cc/7Yzbq9"
-    },
-    {
-      id: "乙",
-      places: ["T1/T2", "臺北關", "修護園區"],
-      url: "https://reurl.cc/omEK3V"
-    }
+    { id: "甲", places: ["華航園區", "藝文特區"],          url: "https://liff.line.me/2008584005-MpP3mpeJ?accountId=29225&type=undefined&source=qc&token=7d8fa44569077910ad740bfcbea18c57e22a26b6b637f25198ec93cb30d90124" },
+    { id: "乙", places: ["T1/T2", "臺北關", "修護園區"],   url: "https://line.quickclick.cc/line/views/liff/liff2-menu?accountId=30881&liffId=1654284301-YLAK1ve5&token=13efb5d38f908117e2eb493a65ccea48f568e3cf13189e4c44a5ecb522bceb6b&source=dotdot_orders" }
   ];
   // ============================================
 
-  const KEY = "eatlink_last_group";
+  const KEY = "eatlink_last_group";   // 和查看訂單頁共用
   let last = null;
   try { last = localStorage.getItem(KEY); } catch (e) {}
 
@@ -99,8 +105,8 @@
     a.href = g.url;
     a.innerHTML =
       '<span class="last">上次選這裡</span>' +
-      '<div class="places">' + g.places.join("<br>") + '</div>' +
-      '<div class="cta">點餐請點此 ›</div>';
+      '<div class="places">' + g.places.map(t => '<span class="pl">' + t + '</span>').join("・") + '</div>' +
+      '<div class="cta">點餐 ›</div>';
     a.addEventListener("click", () => {
       try { localStorage.setItem(KEY, g.id); } catch (e) {}
     });
@@ -108,4 +114,4 @@
   });
 </script>
 </body>
-</invoke>
+</html>

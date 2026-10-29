@@ -49,6 +49,7 @@
   a.card:active{transform:scale(.97)}
   a.card.g1{background:var(--card1)}
   a.card.g2{background:var(--card2);color:#fff}
+  .pl{white-space:nowrap}
   .places{font-size:24px;font-weight:900;line-height:1.4;letter-spacing:.05em}
   .cta{
     flex:none;font-family:system-ui,sans-serif;font-size:15px;font-weight:800;
@@ -104,7 +105,7 @@
     a.href = g.url;
     a.innerHTML =
       '<span class="last">上次選這裡</span>' +
-      '<div class="places">' + g.places.join("・") + '</div>' +
+      '<div class="places">' + g.places.map(t => '<span class="pl">' + t + '</span>').join("・") + '</div>' +
       '<div class="cta">查詢 ›</div>';
     a.addEventListener("click", () => {
       try { localStorage.setItem(KEY, g.id); } catch (e) {}
